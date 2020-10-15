@@ -16,7 +16,8 @@ def main():
     argp = argparse.ArgumentParser()
     argp.add_argument('-k', '--pubkey', type=str, required=True, help='RSA public key path')
     argp.add_argument('-prk', '--prvkey', type=str, required=True, help='RSA private key path')
-    argp.add_argument('temp_patch_dir', type=str, help='Patch file directory')
+    argp.add_argument('-pd', '--patch-dir', type=str, help='Patch files directory')
+    argp.add_argument('-fd', '--full-dir', type=str, help='Full files directory (for calcuating hash values)')
     argp.add_argument('-o', '--output', type=str, required=True, help='Output path')
     args = argp.parse_args()
 
@@ -33,7 +34,7 @@ def main():
     os.makedirs(temp_patch_dir, exist_ok=True)
 
     # Create a entity of patch
-    shutil.make_archive(temp_patch_dir + '/patch_entity', 'zip', root_dir=args.temp_patch_dir)
+    shutil.make_archive(temp_patch_dir + '/patch_entity', 'zip', root_dir=args.patch_dir)
     
     # Calculate a signature from a hash value of the entity of patch
     file_hash_value = common.file_hash(temp_patch_dir + '/patch_entity.zip')
